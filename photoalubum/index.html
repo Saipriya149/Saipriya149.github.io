@@ -1,1 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photo Album with Image Processing</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <style>
+    /* Custom styles for the photo album */
+    .album {
+      padding-top: 60px;
+    }
+    .album .card {
+      margin-bottom: 30px;
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="container album">
+    <h1 class="text-center mb-5">Photo Album with Image Processing</h1>
+    
+    <div class="row">
+      <!-- Repeat this card structure for each image -->
+      <div class="col-md-4">
+        <div class="card">
+          <img id="image1" src="https://picsum.photos/300/200" class="card-img-top" alt="Image 1">
+          <div class="card-body">
+            <!-- Buttons to trigger image processing operations -->
+            <button class="btn btn-primary btn-sm mb-2" onclick="makeReddish('image1')">Make Reddish</button>
+            <button class="btn btn-primary btn-sm mb-2" onclick="makeBlueish('image1')">Make Blueish</button>
+            <button class="btn btn-primary btn-sm mb-2" onclick="makeGreenish('image1')">Make Greenish</button>
+            <button class="btn btn-primary btn-sm mb-2" onclick="duplicateImage('image1')">Duplicate Image</button>
+            <button class="btn btn-primary btn-sm mb-2" onclick="increaseBrightness('image1')">Increase Brightness</button>
+            <button class="btn btn-primary btn-sm mb-2" onclick="reduceResolution('image1')">Reduce Resolution</button>
+            <button class="btn btn-primary btn-sm mb-2" onclick="toGrayscale('image1')">Convert to Grayscale</button>
+            <button class="btn btn-primary btn-sm mb-2" onclick="generateQRCode('image1')">Generate QR Code</button>
+            <!-- Add more buttons for additional operations -->
+          </div>
+        </div>
+      </div>
+      <!-- End of card structure -->
+    </div>
+
+    <!-- Repeat the above row structure for additional images -->
+
+  </div>
+
+  <!-- Bootstrap JS (Optional) -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <!-- jQuery (Optional) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <!-- qrcode.js library -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4"></script>
+  <!-- JavaScript functions for image processing operations -->
+  <script>
+    function makeReddish(imageId) {
+      var img = document.getElementById(imageId);
+      var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0, img.width, img.height);
+      var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      var data = imageData.data;
+      for (var i = 0; i < data.length; i += 4) {
+        var red = data[i];
+        var green = data[i + 1];
+        var blue = data[i + 2];
+        if (red <= green + blue) {
+          data[i] = green + blue;
+        }
+      }
+      ctx.putImageData(imageData, 0, 0);
+      img.src = canvas.toDataURL();
+    }
+
+    function makeBlueish(imageId) {
+      var img = document.getElementById(imageId);
+      var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0, img.width, img.height);
+      var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      var data = imageData.data;
+      for (var i = 0; i < data.length; i += 4) {
+        var red = data[i];
+        var green = data[i + 1];
+        var blue = data[i + 2];
+        if (blue <= red + green) {
+          data[i + 2] = red + green;
+        }
+      }
+      ctx.putImageData(imageData, 0, 0);
+      img.src = canvas.toDataURL();
+    }
+
+    function makeGreenish(imageId) {
+      var img = document.getElementById(imageId);
+      var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0, img.width, img.height);
+      var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      var data = imageData.data;
+      for (var i = 0; i < data.length; i += 4) {
+        var red = data[i];
+        var green = data[i + 1];
+        var blue = data[i + 2];
+        if (green <= red + blue) {
+          data[i + 1] = red + blue;
+        }
+      }
+      ctx.putImageData(imageData, 0, 0);
+      img.src = canvas.toDataURL();
+    }
+
+    function duplicateImage(imageId) {
+      var img = document.getElementById(imageId);
+      var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0, img.width, img.height);
+      var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      ctx.putImageData(imageData, img.width + 10, 0); // Adjust position if needed
+      img.src = canvas.toDataURL();
+    }
+
+    function increaseBrightness(imageId) {
+      var img = document.getElementById(imageId);
+      var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0, img.width, img.height);
+      var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      var data = imageData.data;
+      for (var i = 0; i < data.length; i += 4) {
+        data[i] += 50; // Increase brightness, adjust value as needed
+        data[i + 1] += 50; // Increase brightness, adjust value as needed
+        data[i + 2] += 50; // Increase brightness, adjust value as needed
+      }
+      ctx.putImageData(imageData, 0, 0);
+      img.src = canvas.toDataURL();
+    }
+
+    function reduceResolution(imageId) {
+      var img = document.getElementById(imageId);
+      var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+      canvas.width = img.width / 2; // Reduce resolution, adjust value as needed
+      canvas.height = img.height / 2; // Reduce resolution, adjust value as needed
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      img.src = canvas.toDataURL();
+    }
+
+    function toGrayscale(imageId) {
+      var img = document.getElementById(imageId);
+      var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0, img.width, img.height);
+      var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      var data = imageData.data;
+      for (var i = 0; i < data.length; i += 4) {
+        var avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+        data[i] = avg;
+        data[i + 1] = avg;
+        data[i + 2] = avg;
+      }
+      ctx.putImageData(imageData, 0, 0);
+      img.src = canvas.toDataURL();
+    }
+
+    function generateQRCode(imageId) {
+      var img = document.getElementById(imageId);
+      var qrCodeData = img.src;
+      var qrCode = new QRCode(document.createElement('div'), {
+        text: qrCodeData,
+        width: 128,
+        height: 128,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+      });
+      var qrCodeDataURL = qrCode._el.firstChild.toDataURL();
+      img.src = qrCodeDataURL;
+    }
+    // Add more JavaScript functions for additional operations
+  </script>
+</body>
+</html>
 
