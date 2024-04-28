@@ -41,16 +41,14 @@
 
   <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/qrcode.min.js"></script>
   <script>
-    async function loadImages() {
+    function loadImages() {
       const album = document.getElementById('album');
-      const response = await fetch('https://picsum.photos/v2/list?page=2&limit=12');
-      const images = await response.json();
 
-      images.forEach(image => {
+      for (let i = 1; i <= 9; i++) {
         const img = document.createElement('img');
-        img.src = image.download_url;
+        img.src = `image${i}.jpg`;
         album.appendChild(img);
-      });
+      }
     }
 
     function checkColor(color) {
