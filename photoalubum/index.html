@@ -3,197 +3,248 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Photo Album with Image Processing</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Custom CSS -->
+  <title>Photo Album</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
-    /* Custom styles for the photo album */
     .album {
-      padding-top: 60px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-gap: 10px;
     }
-    .album .card {
-      margin-bottom: 30px;
+    .album img {
+      width: 100%;
+      height: auto;
     }
   </style>
 </head>
 <body>
-  
-  <div class="container album">
-    <h1 class="text-center mb-5">Photo Album with Image Processing</h1>
-    
-    <div class="row">
-      <!-- Repeat this card structure for each image -->
-      <div class="col-md-4">
-        <div class="card">
-          <img id="image1" src="https://picsum.photos/300/200" class="card-img-top" alt="Image 1">
-          <div class="card-body">
-            <!-- Buttons to trigger image processing operations -->
-            <button class="btn btn-primary btn-sm mb-2" onclick="makeReddish('image1')">Make Reddish</button>
-            <button class="btn btn-primary btn-sm mb-2" onclick="makeBlueish('image1')">Make Blueish</button>
-            <button class="btn btn-primary btn-sm mb-2" onclick="makeGreenish('image1')">Make Greenish</button>
-            <button class="btn btn-primary btn-sm mb-2" onclick="duplicateImage('image1')">Duplicate Image</button>
-            <button class="btn btn-primary btn-sm mb-2" onclick="increaseBrightness('image1')">Increase Brightness</button>
-            <button class="btn btn-primary btn-sm mb-2" onclick="reduceResolution('image1')">Reduce Resolution</button>
-            <button class="btn btn-primary btn-sm mb-2" onclick="toGrayscale('image1')">Convert to Grayscale</button>
-            <button class="btn btn-primary btn-sm mb-2" onclick="generateQRCode('image1')">Generate QR Code</button>
-            <!-- Add more buttons for additional operations -->
-          </div>
-        </div>
-      </div>
-      <!-- End of card structure -->
+  <div class="container">
+    <h1 class="mt-5 mb-4">Photo Album</h1>
+    <div class="mt-4">
+      <button class="btn btn-primary" onclick="checkColor('red')">Make Reddish</button>
+      <button class="btn btn-primary" onclick="checkColor('blue')">Make Blueish</button>
+      <button class="btn btn-primary" onclick="checkColor('green')">Make Greenish</button>
+      <button class="btn btn-primary" onclick="duplicateImages()">Duplicate Images</button>
+      <button class="btn btn-primary" onclick="increaseBrightness()">Increase Brightness</button>
+      <button class="btn btn-primary" onclick="reduceResolution()">Reduce Resolution</button>
+      <button class="btn btn-primary" onclick="createAvatar()">Create Avatar</button>
+      <button class="btn btn-primary" onclick="convertToGrayScale()">Convert to Gray Scale</button>
+      <button class="btn btn-primary" onclick="generateQRCode()">Generate QR Code</button>
+      <button class="btn btn-primary" onclick="filterImages('landscape')">Show Landscape Only</button>
+      <button class="btn btn-primary" onclick="filterImages('portrait')">Show Portrait Only</button>
+      <!-- Add more filters if needed -->
     </div>
-
-    <!-- Repeat the above row structure for additional images -->
-
+    <div class="album mt-4" id="album">
+      <!-- Images will be loaded here -->
+    </div>
   </div>
 
-  <!-- Bootstrap JS (Optional) -->
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <!-- jQuery (Optional) -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <!-- qrcode.js library -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4"></script>
-  <!-- JavaScript functions for image processing operations -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/qrcode.min.js"></script>
   <script>
-    function makeReddish(imageId) {
-      var img = document.getElementById(imageId);
-      var canvas = document.createElement('canvas');
-      var ctx = canvas.getContext('2d');
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0, img.width, img.height);
-      var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      var data = imageData.data;
-      for (var i = 0; i < data.length; i += 4) {
-        var red = data[i];
-        var green = data[i + 1];
-        var blue = data[i + 2];
-        if (red <= green + blue) {
-          data[i] = green + blue;
-        }
-      }
-      ctx.putImageData(imageData, 0, 0);
-      img.src = canvas.toDataURL();
-    }
+    async function loadImages() {
+      const album = document.getElementById('album');
+      const response = await fetch('https://picsum.photos/v2/list?page=2&limit=12');
+      const images = await response.json();
 
-    function makeBlueish(imageId) {
-      var img = document.getElementById(imageId);
-      var canvas = document.createElement('canvas');
-      var ctx = canvas.getContext('2d');
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0, img.width, img.height);
-      var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      var data = imageData.data;
-      for (var i = 0; i < data.length; i += 4) {
-        var red = data[i];
-        var green = data[i + 1];
-        var blue = data[i + 2];
-        if (blue <= red + green) {
-          data[i + 2] = red + green;
-        }
-      }
-      ctx.putImageData(imageData, 0, 0);
-      img.src = canvas.toDataURL();
-    }
-
-    function makeGreenish(imageId) {
-      var img = document.getElementById(imageId);
-      var canvas = document.createElement('canvas');
-      var ctx = canvas.getContext('2d');
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0, img.width, img.height);
-      var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      var data = imageData.data;
-      for (var i = 0; i < data.length; i += 4) {
-        var red = data[i];
-        var green = data[i + 1];
-        var blue = data[i + 2];
-        if (green <= red + blue) {
-          data[i + 1] = red + blue;
-        }
-      }
-      ctx.putImageData(imageData, 0, 0);
-      img.src = canvas.toDataURL();
-    }
-
-    function duplicateImage(imageId) {
-      var img = document.getElementById(imageId);
-      var canvas = document.createElement('canvas');
-      var ctx = canvas.getContext('2d');
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0, img.width, img.height);
-      var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      ctx.putImageData(imageData, img.width + 10, 0); // Adjust position if needed
-      img.src = canvas.toDataURL();
-    }
-
-    function increaseBrightness(imageId) {
-      var img = document.getElementById(imageId);
-      var canvas = document.createElement('canvas');
-      var ctx = canvas.getContext('2d');
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0, img.width, img.height);
-      var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      var data = imageData.data;
-      for (var i = 0; i < data.length; i += 4) {
-        data[i] += 50; // Increase brightness, adjust value as needed
-        data[i + 1] += 50; // Increase brightness, adjust value as needed
-        data[i + 2] += 50; // Increase brightness, adjust value as needed
-      }
-      ctx.putImageData(imageData, 0, 0);
-      img.src = canvas.toDataURL();
-    }
-
-    function reduceResolution(imageId) {
-      var img = document.getElementById(imageId);
-      var canvas = document.createElement('canvas');
-      var ctx = canvas.getContext('2d');
-      canvas.width = img.width / 2; // Reduce resolution, adjust value as needed
-      canvas.height = img.height / 2; // Reduce resolution, adjust value as needed
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      img.src = canvas.toDataURL();
-    }
-
-    function toGrayscale(imageId) {
-      var img = document.getElementById(imageId);
-      var canvas = document.createElement('canvas');
-      var ctx = canvas.getContext('2d');
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0, img.width, img.height);
-      var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      var data = imageData.data;
-      for (var i = 0; i < data.length; i += 4) {
-        var avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
-        data[i] = avg;
-        data[i + 1] = avg;
-        data[i + 2] = avg;
-      }
-      ctx.putImageData(imageData, 0, 0);
-      img.src = canvas.toDataURL();
-    }
-
-    function generateQRCode(imageId) {
-      var img = document.getElementById(imageId);
-      var qrCodeData = img.src;
-      var qrCode = new QRCode(document.createElement('div'), {
-        text: qrCodeData,
-        width: 128,
-        height: 128,
-        colorDark : "#000000",
-        colorLight : "#ffffff",
-        correctLevel : QRCode.CorrectLevel.H
+      images.forEach(image => {
+        const img = document.createElement('img');
+        img.src = image.download_url;
+        album.appendChild(img);
       });
-      var qrCodeDataURL = qrCode._el.firstChild.toDataURL();
-      img.src = qrCodeDataURL;
     }
-    // Add more JavaScript functions for additional operations
+
+    function checkColor(color) {
+      const album = document.getElementById('album');
+      const images = album.querySelectorAll('img');
+
+      images.forEach(img => {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        context.drawImage(img, 0, 0, img.width, img.height);
+        const imageData = context.getImageData(0, 0, img.width, img.height);
+        const pixels = imageData.data;
+        let count = 0;
+
+        for (let i = 0; i < pixels.length; i += 4) {
+          const r = pixels[i];
+          const g = pixels[i + 1];
+          const b = pixels[i + 2];
+
+          if (color === 'red' && r > g + b) {
+            count++;
+          } else if (color === 'blue' && b > r + g) {
+            count++;
+          } else if (color === 'green' && g > r + b) {
+            count++;
+          }
+        }
+
+        if (count / (pixels.length / 4) > 0.5) {
+          // Image is predominantly of the specified color
+          return;
+        }
+
+        // Image is not predominantly of the specified color, manipulate it
+        for (let i = 0; i < pixels.length; i += 4) {
+          if (color === 'red') {
+            if (pixels[i] <= pixels[i + 1] + pixels[i + 2]) {
+              pixels[i] = 255;
+            }
+          } else if (color === 'blue') {
+            if (pixels[i + 2] <= pixels[i] + pixels[i + 1]) {
+              pixels[i + 2] = 255;
+            }
+          } else if (color === 'green') {
+            if (pixels[i + 1] <= pixels[i] + pixels[i + 2]) {
+              pixels[i + 1] = 255;
+            }
+          }
+        }
+
+        context.putImageData(imageData, 0, 0);
+        const imageURL = canvas.toDataURL();
+        img.src = imageURL;
+      });
+    }
+
+    function duplicateImages() {
+      const album = document.getElementById('album');
+      const images = album.querySelectorAll('img');
+
+      images.forEach(img => {
+        const duplicateImg = img.cloneNode();
+        album.appendChild(duplicateImg);
+      });
+    }
+
+    function increaseBrightness() {
+      const album = document.getElementById('album');
+      const images = album.querySelectorAll('img');
+
+      images.forEach(img => {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        context.drawImage(img, 0, 0, img.width, img.height);
+
+        const imageData = context.getImageData(0, 0, img.width, img.height);
+        const pixels = imageData.data;
+
+        for (let i = 0; i < pixels.length; i += 4) {
+          pixels[i] += 50; // Increase brightness by adding to each R,G,B value
+          pixels[i + 1] += 50;
+          pixels[i + 2] += 50;
+        }
+
+        context.putImageData(imageData, 0, 0);
+        const imageURL = canvas.toDataURL();
+        img.src = imageURL;
+      });
+    }
+
+    function reduceResolution() {
+      const album = document.getElementById('album');
+      const images = album.querySelectorAll('img');
+
+      images.forEach(img => {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        const scale = 0.5; // Reducing resolution by scaling down to 50%
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+        context.drawImage(img, 0, 0, canvas.width, canvas.height);
+        img.src = canvas.toDataURL();
+      });
+    }
+
+    function createAvatar() {
+      const album = document.getElementById('album');
+      const images = album.querySelectorAll('img');
+
+      images.forEach(img => {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        canvas.width = 100; // Set avatar width
+        canvas.height = 100; // Set avatar height
+
+        // Draw background
+        context.fillStyle = '#ccc';
+        context.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Draw letters
+        context.font = '48px Arial';
+        context.fillStyle = '#000';
+        context.fillText('SS', 25, 60); // Adjust position as needed
+
+        img.src = canvas.toDataURL();
+      });
+    }
+
+    function convertToGrayScale() {
+      const album = document.getElementById('album');
+      const images = album.querySelectorAll('img');
+
+      images.forEach(img => {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        context.drawImage(img, 0, 0, img.width, img.height);
+
+        const imageData = context.getImageData(0, 0, img.width, img.height);
+        const pixels = imageData.data;
+
+        for (let i = 0; i < pixels.length; i += 4) {
+          const avg = (pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3;
+          pixels[i] = avg;
+          pixels[i + 1] = avg;
+          pixels[i + 2] = avg;
+        }
+
+        context.putImageData(imageData, 0, 0);
+        const imageURL = canvas.toDataURL();
+        img.src = imageURL;
+      });
+    }
+
+    function generateQRCode() {
+      const album = document.getElementById('album');
+      const images = album.querySelectorAll('img');
+
+      images.forEach(img => {
+        const qrCodeContainer = document.createElement('div'); // Create a container for the QR code
+        img.parentNode.insertBefore(qrCodeContainer, img.nextSibling); // Insert the container after the image
+        const qrCode = new QRCode(qrCodeContainer, {
+          text: img.src,
+          width: 128,
+          height: 128
+        });
+      });
+    }
+
+    function filterImages(criteria) {
+      const album = document.getElementById('album');
+      const images = album.querySelectorAll('img');
+
+      images.forEach(img => {
+        const aspectRatio = img.width / img.height;
+
+        if (criteria === 'landscape' && aspectRatio > 1) {
+          img.style.display = 'block';
+        } else if (criteria === 'portrait' && aspectRatio < 1) {
+          img.style.display = 'block';
+        } else {
+          img.style.display = 'none';
+        }
+      });
+    }
+
+    window.onload = function () {
+      loadImages();
+    };
   </script>
 </body>
 </html>
-
