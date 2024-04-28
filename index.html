@@ -1,14 +1,189 @@
 <!DOCTYPE html>
-<html>
+
+<html lang="en">
+
 <head>
-    <title>My Profile</title>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>My Responsive Profile</title>
+
+  <!-- Bootstrap CSS -->
+
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
+
 <body>
-    <h3>My Profile</h3>
-    <h4>Name: Saipriya Sriram</h4>
-    <h4>Age: 21</h4>
-    <h4>E-mail:abc@gmail.com</h4>
-    <h4>Location: Kerala,India</h4>
-    <h4><p>About me: I am Saipriya Sriram, Lorem ipsum dolor sit amet consectetur adipisicing elit.<br> Quidem impedit dignissimos, eveniet sequi dicta quas sed,</br>dolor animi quod esse ipsa nostrum totam voluptates velit minima! Aperiam nam eveniet dolor?</h4></p>
-</body>
-</html>
+
+ 
+
+<div class="container mt-5">
+
+  <div class="row">
+
+    <div class="col-md-3">
+
+      <div class="card">
+
+        <div class="card-body text-center">
+
+          <img src="Photo 1- Cropped.jpg" alt="Profile Picture" class="img-fluid rounded-circle mb-3">
+
+          <h2 class="mb-0">Saipriya Sriram</h2>
+
+          <p class="text-muted">Full Stack Developer</p>
+
+          <div class="social-links">
+
+            <a href="#" class="btn btn-outline-primary btn-sm mr-2"><i class="fab fa-linkedin"></i></a>
+
+            <a href="#" class="btn btn-outline-primary btn-sm mr-2"><i class="fab fa-twitter"></i></a>
+
+            <a href="#" class="btn btn-outline-primary btn-sm"><i class="fab fa-github"></i></a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="col-md-9">
+
+      <div class="card">
+
+        <div class="card-body">
+
+          <h3>About Me</h3>
+
+          <p>Highly skilled and innovative Full Stack Developer with over 5 months of experience in designing, developing, and implementing web applications. Proficient in both front-end and back-end technologies, adept at managing projects from concept to completion. Strong problem-solving abilities and a passion for creating efficient, scalable solutions.</p>
+
+          <h3>Technical Skills</h3>
+
+          <ul class="list-unstyled">
+
+            <li><strong>Front-end:</strong> HTML5, CSS3, JavaScript, Bootstrap</li>
+
+            <li><strong>Back-end:</strong> Django</li>
+
+            <li><strong>Database:</strong> SQL (MySQL, PostgreSQL), NoSQL (MongoDB)</li>
+
+            <li><strong>Other:</strong>Python,  C, Java</li>
+
+          </ul>
+
+          <h3>Education</h3>
+
+          <p><strong>Bachelor of Science in Microbiology</strong><br>Amrita Vishwa Vidyapeetham, Amritapuri, Kerala, India<br>Graduated June 2023</p>
+
+          <a href="photo_album.html" class="btn btn-primary mr-2">View Photo Album</a>
+
+          <a href="#" class="btn btn-success">Contact Me</a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Projects -->
+
+  <div class="row mt-5">
+
+    <div class="col-md-8 offset-md-2">
+
+      <h3>Projects</h3>
+
+      <div class="card">
+
+        <div class="card-body">
+
+          <h5 class="card-title"><a href="photo_album_project.html">Photo Album Web Application</a></h5>
+
+          <p class="card-text">Description: Developed a photo album web application that allows users to upload, organize, and share their photos online. Users can create albums, add photos to them, and apply tags for easy categorization. The application features a responsive design, allowing seamless access from desktop and mobile devices.</p>
+
+          <p class="card-text"><strong>Technologies Used:</strong> It is a  front-end project using HTML, CSS, Bootstrap, Javascript</p>
+
+          <ul class="list-unstyled">
+
+            <li>User authentication and authorization system to ensure secure access to albums.</li>
+
+            <li>Drag-and-drop functionality for organizing photos within albums.</li>
+
+            <li>Search functionality based on tags and album names for quick retrieval of photos.</li>
+
+            <li>Integration with social media platforms for easy sharing of albums and photos.</li>
+
+          </ul>
+
+        </div>
+
+      </div>
+
+      <div class="card mt-3">
+
+        <div class="card-body">
+
+          <h5 class="card-title"><a href="tic_tac_toe_project.html">Tic-Tac-Toe Game</a></h5>
+
+          <p class="card-text">Description: Implemented a classic Tic-Tac-Toe game where two players take turns marking spaces in a 3x3 grid with their respective symbols (X or O). The objective is to form a horizontal, vertical, or diagonal line of three identical symbols to win the game. The game includes a user-friendly interface and supports multiplayer mode for interactive gameplay.</p>
+
+          <p class="card-text"><strong>Technologies Used:</strong> HTML, CSS, and JavaScript (ES6+) for the front-end development. Utilized the Model-View-Controller (MVC) architectural pattern for organizing code and managing game logic.</p>
+
+          <ul class="list-unstyled">
+
+            <li>Responsive design to ensure optimal gameplay experience across various devices.</li>
+
+            <li>Dynamic updating of game status and player turns using JavaScript DOM manipulation.</li>
+
+            <li>Win detection algorithm to determine the winner after each move and handle tie games.</li>
+
+            <li>Option to restart the game or play again after completion.</li>
+
+          </ul>
+
+        </div>
+
+      </div>
+
+      <div class="card mt-3">
+
+        <div class="card-body">
+
+          <h5 class="card-title"><a href="wordle_solver_project.html">Wordle Solver</a></h5>
+
+          <p class="card-text"><strong>Description: </strong>Developed a Wordle solver application that assists players in solving Wordle puzzles .</p>
+          <ul class="list-unstyled">
+
+            <li> Each guess must be a valid five-letter word.</li>
+            <li> The color of a tile will change to show you how close your guess was.</li>
+
+            <li>If the tile turns green, the letter is in the word, and it is in the correct spot..</li>
+
+            <li> If the tile turns yellow, the letter is in the word, but it is not in the correct spot.If the tile turns gray, the letter is not in the word.</li>
+
+          </ul>
+
+ 
+by suggesting potential word combinations based on the clues provided. Wordle is a word puzzle game where players have six attempts to guess a five-letter target word. The solver analyzes the available clues and generates a list of viable word options, helping players make informed guesses and improve their solving strategies.</p>
+
+          <p class="card-text"><strong>Technologies Used:</strong> HTML, CSS, Bootstrap, Javascript</ p>
+
+          <ul class="list-unstyled">
+
+            <li>Simple web interface for inputting clues and receiving suggested word
+              </li>
+            </ul>
+            </div>
+      </div>
+    </div>
+    </div>
+  </body>
+  </html>
+      
